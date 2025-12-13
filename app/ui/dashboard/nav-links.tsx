@@ -1,4 +1,8 @@
 "use client";
+// vì dùng hooks usePathname nên cần có "user client";
+// nếu không có "use client" sẽ báo lỗi: Error: usePathname can only be used in a Client Component.
+// server xử lý dữ liệu và render.
+// còn client xử lý tương tác người dùng và trạng thái (useEffect, useState,... hooks) 
 
 import {
   UserGroupIcon,
