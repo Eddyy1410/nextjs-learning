@@ -4,6 +4,14 @@ import Link from "next/link";
 import { lusitana } from "@/app/ui/fonts";
 import Image from "next/image";
 
+// Mặc dù Page là Server Component, nhưng bên trong nó có dùng: <Link> và <Image>
+// Hai cái này là client component có sẵn của Next.js, và bản thân chúng có thể chứa logic Client (ví dụ: Link cần lắng nghe click để prefetch, Image cần lazy load).
+// Mô hình hoạt động:
+// Trong file page.tsx (Server) của bạn:
+// Server: Render ra HTML của các thẻ div, h1, p...
+// Gặp thẻ <Link>: Server nhận ra đây là Client Component. Nó để lại một "chỗ trống" (placeholder) và đánh dấu: "Chỗ này dành cho thằng Link, gửi code JS của thằng Link về cho Client nhé".
+// Client: Nhận HTML + Code JS của <Link>. Trình duyệt lắp ráp chúng lại.
+// => Tóm lại: Bạn cứ thoải mái dùng các component có sẵn của Next.js ở bất cứ đâu (Server hay Client) mà không cần quan tâm nó là gì, Next.js đã tối ưu việc đóng gói (bundling) hết cho bạn rồi.
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col p-6">

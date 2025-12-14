@@ -1,0 +1,26 @@
+1. Server Component (Component Máy chủ)
+Là loại component mặc định trong Next.js App Router.
+    + Bản chất: Là các đoạn code React chỉ chạy trên Server. Sau khi chạy xong, nó trả về kết quả là HTML (và dữ liệu JSON) cho trình duyệt. Bản thân đoạn code Javascript của component này không bao giờ được gửi xuống máy người dùng.
+    + Đặc điểm nhận dạng: Không có dòng 'use client' ở đầu file (Mặc định).
+    + Sức mạnh:
+        Truy cập trực tiếp Database, File System.
+        Chứa các khóa bảo mật (API Key) an toàn tuyệt đối.
+        Giúp web tải nhanh vì không tốn dung lượng JS tải về máy khách.
+    + Hạn chế: Không thể lắng nghe người dùng (không onClick, không onChange), không có bộ nhớ (không useState, useEffect).
+
+2. Client Component (Component Máy trạm)
+Là loại component dùng để xử lý tương tác giao diện.
+    + Bản chất: Là các đoạn code React được Pre-render HTML trên Server trước, sau đó gửi cả code Javascript xuống trình duyệt để "chạy" (Hydrate) và xử lý tương tác.
+    + Đặc điểm nhận dạng: Bắt buộc phải có dòng 'use client' ở đầu file.
+    + Sức mạnh:
+        Lắng nghe được sự kiện (Click chuột, gõ phím, cuộn trang).
+        Sử dụng được React Hooks (useState, useEffect, useRouter...).
+        Truy cập được API trình duyệt (window, localStorage, geolocation).
+    + Hạn chế: Không được truy cập trực tiếp Database (phải gọi qua API hoặc Server Action), làm tăng dung lượng tải trang.
+------------------------------------------------------------------------
+ Loại Component  |	            Định nghĩa ngắn gọn	                    |  Chỉ thị (Directive)
+Server Component |	Component tĩnh, chạy xong ở Server là hết việc.	    | (Không cần viết gì cả)
+Client Component |	Component động, sống và tương tác trên Trình duyệt.	| 'use client'
+
+Lưu ý quan trọng:
+'use server': Không dùng để định nghĩa Server Component. Nó dùng để định nghĩa Server Action (Hàm xử lý form/logic backend).

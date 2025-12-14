@@ -1,8 +1,10 @@
 "use client";
-// vì dùng hooks usePathname nên cần có "user client";
-// nếu không có "use client" sẽ báo lỗi: Error: usePathname can only be used in a Client Component.
-// server xử lý dữ liệu và render.
-// còn client xử lý tương tác người dùng và trạng thái (useEffect, useState,... hooks) 
+// Định nghĩa: Đây đúng là cái "công tắc" để biến một file thành Client Component.
+// Mặc định: Trong Next.js (App Router), mọi thứ mặc định là Server.
+// Khi nào dùng: Khi bạn cần dùng Hooks (có chữ "use" đúng đầu như: useState, useEffect...) hoặc sự kiện (onClick).
+// React Hooks: useState, useEffect... (cũ), Next.js Hooks: usePathname, useRouter... (mới)
+// Cách dùng: Bạn đặt 'use client' lên đầu file.
+// => Kết luận: File nào có 'use client' thì file đó là Client Component.
 
 import {
   UserGroupIcon,
