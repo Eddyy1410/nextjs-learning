@@ -3,6 +3,14 @@ import NavLinks from '@/app/ui/dashboard/nav-links';
 import AcmeLogo from '@/app/ui/acme-logo';
 import { PowerIcon } from '@heroicons/react/24/outline';
 
+// <Link href=""/> hỗ trợ CSR thay thế cho <a href=""/> 
+// <a/> sẽ tải lại trang (full refresh)
+// <Link/> chỉ tải lại phần thay đổi (client side routing), Client component
+// Cơ chế Automatic CODE-SPLITTING và PREFETCHING
+// so sánh 2 cách thức CSR cũ là theo SPA load hết initial data nên khiến lần đầu bị chậm, còn theo cách mới của Next.js là chỉ sẽ tải RSC payload, client component JS, CSS cần thiết cho route segment hompage và trong homepage thì sẽ có <Link /> và khi đó thì phía client sẽ fetch code cần thiết cho các linked route segment và để sẵn ở RAM
+// Khi user click vào link thì sẽ render ngay lập tức từ RAM mà không cần fetch lại từ server nữa
+// Next.js SSR (lần đầu với homepage route segment) + CSR hybrid (các lần sau với các linked route segment)
+
 export default function SideNav() {
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2">
