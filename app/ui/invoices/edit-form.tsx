@@ -9,7 +9,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
-import { updateInvoice } from "@/app/lib/actions";
+import { State, updateInvoice } from "@/app/lib/actions";
+import { useActionState } from "react";
 
 export default function EditInvoiceForm({
   invoice,
@@ -18,13 +19,25 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
+  const initialState: State = { message: null, errors: {} };
+
+  // .bind Đây là một phương thức mặc định có sẵn (Built-in method) của ngôn ngữ JavaScript. Bất kỳ hàm (function) nào trong JavaScript cũng tự động có sẵn method .bind() này.
+  // 1. Gán giá trị cho từ khóa this (cái này nâng cao, bỏ qua).
+  // 2. Tạo ra một bản sao của hàm cũ với các tham số được điền sẵn (Partial Application). <- Đây chính là cái bạn đang dùng.
+  // function.bind(thisArg, arg1, arg2, ...)
+  // Trong Server Actions (và functional programming hiện đại), chúng ta thường không dùng this. -> null
+  // Vì sao không điền arg 3 là formData -> vì formData sẽ được tự động truyền vào khi <form/> được submit.
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
+  const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
 
   return (
-    <form action={updateInvoiceWithId}>
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+    <form action={formAction}>
+      <div
+        className="rounded-md bg-gray-50 p-4 md:p-6"
+        aria-describedby="customer-error"
+      >
         {/* Customer Name */}
-        <div className="mb-4">
+        <div className="mb-4" aria-describedby="customer-error">
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>
@@ -46,10 +59,18 @@ export default function EditInvoiceForm({
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.customerId &&
+              state.errors.customerId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </div>
 
         {/* Invoice Amount */}
-        <div className="mb-4">
+        <div className="mb-4" aria-describedby="customer-error">
           <label htmlFor="amount" className="mb-2 block text-sm font-medium">
             Choose an amount
           </label>
@@ -67,10 +88,18 @@ export default function EditInvoiceForm({
               <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.amount &&
+              state.errors.amount.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </div>
 
         {/* Invoice Status */}
-        <fieldset>
+        <fieldset aria-describedby="customer-error">
           <legend className="mb-2 block text-sm font-medium">
             Set the invoice status
           </legend>
@@ -110,7 +139,21 @@ export default function EditInvoiceForm({
               </div>
             </div>
           </div>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.status &&
+              state.errors.status.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+              ))}
+          </div>
         </fieldset>
+
+        <div id="customer-error" aria-live="polite" aria-atomic="true">
+          {state.message && (
+            <p className="mt-2 text-sm text-red-500">{state.message}</p>
+          )}
+        </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
