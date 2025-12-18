@@ -9,6 +9,12 @@ import {
   CardsSkeleton,
 } from "@/app/ui/skeletons";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
+
 // Khi dùng dấu () parentheses trong tên thư mục
 // Thì khi lên url không phải là /dashboard/(overview)/page.tsx sẽ được chuyển thành /dashboard
 export default async function Page() {

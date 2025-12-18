@@ -7,6 +7,12 @@ import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 import { fetchInvoicesPages } from "@/app/lib/data";
 
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: 'Invoices',
+};
+
 //Nguồn gốc dữ liệu: Props này KHÔNG phải do bạn truyền, mà do Next.js Framework tự động bơm vào (Magic Props).
 // Tại sao lại là async và Promise?
 // Trong các phiên bản Next.js mới nhất, các dữ liệu liên quan đến Request (như params - đường dẫn động, searchParams - query string) được chuyển sang dạng Bất đồng bộ (Asynchronous).
